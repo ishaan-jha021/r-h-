@@ -3,178 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farm2Future | Pitch Deck</title>
+    <title>Farm2Future Pitch Deck</title>
     <style>
-        /* --- RESET & BASE --- */
+        /* --- RESET & VARIABLES --- */
         :root {
-            --bg-color: #F5F2EB;
-            --text-dark: #0F281E;
-            --text-light: #F5F2EB;
-            --primary-green: #1A3C2F;
-            --accent-olive: #6B8E23;
-            --accent-gold: #C5A059;
-            --warning-red: #D9534F;
-            --white-glass: rgba(255, 255, 255, 0.7);
-            --dark-glass: rgba(15, 40, 30, 0.95);
-            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-            --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --c-deep-green: #0E3B2E;
+            --c-sage: #7FB7A1;
+            --c-off-white: #F6F7F5;
+            --c-charcoal: #1E1E1E;
+            --c-accent: #C5A059; /* Updated to Gold from Slide 1 */
+            
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            
+            --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+            --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+            --ease-switch: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(at 80% 0%, rgba(107, 142, 35, 0.1) 0px, transparent 50%),
-                radial-gradient(at 0% 50%, rgba(197, 160, 89, 0.1) 0px, transparent 50%);
-            color: var(--text-dark);
-            height: 100vh;
-            width: 100vw;
+            font-family: var(--font-main);
+            background-color: var(--c-off-white);
+            color: var(--c-charcoal);
             overflow: hidden;
-            line-height: 1.5;
+            width: 100vw;
+            height: 100vh;
         }
 
-        /* --- GLOBAL ANIMATIONS --- */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        /* --- ICONS (SVG Styling) --- */
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            margin-right: 8px;
+            transition: all 0.3s ease;
         }
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(107, 142, 35, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(107, 142, 35, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(107, 142, 35, 0); }
+        .icon-lg {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 0.5rem;
+            color: var(--c-deep-green);
+            transition: all 0.3s ease;
         }
-        @keyframes gradient-text {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-in { opacity: 0; animation: fadeInUp 0.8s var(--ease-out) forwards; }
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
 
-        /* --- STATE MANAGEMENT (RADIO HACK) --- */
+        /* --- STATE MANAGEMENT --- */
         input[name="slide-control"] { display: none; }
+
+        /* --- LAYOUT CONTAINER --- */
         .deck-container {
             position: relative;
-            width: 100%;
-            height: 100%;
-            perspective: 2000px;
-            overflow: hidden;
-        }
-
-        /* --- NAVIGATION UI --- */
-        .nav-toggle-label {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: var(--primary-green);
-            border-radius: 50%;
-            z-index: 1000;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s var(--bounce);
-        }
-        .nav-toggle-label:hover { transform: scale(1.1) rotate(90deg); background: var(--accent-gold); }
-        .nav-toggle-label::after { content: "☰"; color: white; font-size: 24px; }
-
-        #nav-checkbox { display: none; }
-        .nav-overlay {
-            position: fixed; top: 0; right: 0; bottom: 0; left: 0;
-            background: var(--dark-glass);
-            backdrop-filter: blur(20px);
-            z-index: 999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #nav-checkbox:checked ~ .nav-overlay { opacity: 1; pointer-events: auto; }
-
-        .nav-links {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            width: 100vw;
+            height: 100vh;
             perspective: 1000px;
         }
-        .nav-link {
-            color: white;
-            font-size: 1.2rem;
-            text-decoration: none;
-            padding: 15px 30px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s var(--ease-out);
-            transform-origin: center;
-        }
-        .nav-link:hover {
-            background: var(--accent-gold);
-            color: var(--primary-green);
-            transform: scale(1.05) translateZ(20px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
 
-        /* Arrows */
-        .slide-nav {
-            position: absolute;
-            bottom: 40px; right: 120px;
-            z-index: 100;
-            display: flex; gap: 15px;
-        }
-        .arrow-btn {
-            width: 50px; height: 50px;
-            border: 2px solid var(--primary-green);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            color: var(--primary-green);
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(5px);
-        }
-        .arrow-btn:hover {
-            background: var(--primary-green);
-            color: white;
-            transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(26, 60, 47, 0.3);
-        }
-
-        /* --- SLIDE BASE --- */
+        /* --- SLIDE COMMON STYLES --- */
         .slide {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            padding: 50px 80px;
+            padding: 4rem 6rem;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            
+            /* Global Page Transition */
             opacity: 0;
+            visibility: hidden;
+            transform: translateY(60px) scale(0.95);
+            filter: blur(12px);
+            transition: 
+                opacity 0.6s ease,
+                transform 0.8s var(--ease-switch),
+                filter 0.6s ease,
+                visibility 0s 0.6s;
             pointer-events: none;
-            transform: rotateX(5deg) translateY(100px) scale(0.9);
-            transform-origin: center bottom;
-            transition: all 0.8s var(--ease-out);
-            background: transparent;
+            z-index: 1;
+            background: var(--c-off-white);
         }
 
-        /* Active Logic */
+        /* Background Graphics */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.05;
+            background: var(--c-deep-green);
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-label {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--c-deep-green);
+            color: var(--c-off-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 1.5rem;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .nav-label:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
+            background: var(--c-sage);
+            color: var(--c-deep-green);
+        }
+
+        .nav-prev { left: 2rem; }
+        .nav-next { right: 2rem; }
+        .slide .nav-label { display: none; }
+
+        /* --- ACTIVE SLIDE LOGIC --- */
         #s1:checked ~ .deck-container .slide-1,
         #s2:checked ~ .deck-container .slide-2,
         #s3:checked ~ .deck-container .slide-3,
@@ -187,393 +147,318 @@
         #s10:checked ~ .deck-container .slide-10,
         #s11:checked ~ .deck-container .slide-11 {
             opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
             pointer-events: auto;
-            transform: rotateX(0) translateY(0) scale(1);
             z-index: 10;
+            transition-delay: 0s;
+        }
+
+        /* Show Nav on Active */
+        #s1:checked ~ .deck-container .slide-1 .nav-label,
+        #s2:checked ~ .deck-container .slide-2 .nav-label,
+        #s3:checked ~ .deck-container .slide-3 .nav-label,
+        #s4:checked ~ .deck-container .slide-4 .nav-label,
+        #s5:checked ~ .deck-container .slide-5 .nav-label,
+        #s6:checked ~ .deck-container .slide-6 .nav-label,
+        #s7:checked ~ .deck-container .slide-7 .nav-label,
+        #s8:checked ~ .deck-container .slide-8 .nav-label,
+        #s9:checked ~ .deck-container .slide-9 .nav-label,
+        #s10:checked ~ .deck-container .slide-10 .nav-label,
+        #s11:checked ~ .deck-container .slide-11 .nav-label {
+            display: flex;
         }
 
         /* --- TYPOGRAPHY --- */
-        h1, h2, h3 { font-family: system-ui, sans-serif; }
+        h1 { font-size: 4rem; font-weight: 700; color: var(--c-deep-green); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        h2 { font-size: 2.8rem; font-weight: 600; color: var(--c-deep-green); margin-bottom: 2rem; }
+        h3 { font-size: 1.5rem; font-weight: 600; color: var(--c-charcoal); margin-bottom: 0.5rem; transition: color 0.3s ease; }
+        p { font-size: 1.1rem; line-height: 1.6; color: #444; transition: color 0.3s ease; }
         
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary-green), var(--accent-olive), var(--accent-gold));
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: gradient-text 5s ease infinite;
+        /* --- GENERAL ANIMATIONS --- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        h1 { font-size: 5rem; font-weight: 800; line-height: 1; margin-bottom: 20px; }
-        h2 { font-size: 3rem; margin-bottom: 30px; color: var(--primary-green); }
-        .tagline {
-            font-size: 1rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--accent-gold);
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: inline-block;
-            padding: 5px 10px;
-            background: rgba(197, 160, 89, 0.1);
-            border-radius: 4px;
+        @keyframes growBar { from { height: 0; opacity: 0; } to { opacity: 1; } }
+        @keyframes pulseSoft {
+            0% { box-shadow: 0 0 0 0 rgba(127, 183, 161, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(127, 183, 161, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(127, 183, 161, 0); }
         }
 
-        /* --- SLIDE 1: INTRO (Parallax & Float) --- */
-        .slide-1 { justify-content: center; }
-        .hero-blob {
+        /* Slide Element Animations */
+        input:checked ~ .deck-container .slide .anim-1 { animation: fadeUp 0.8s var(--ease-out) 0.3s forwards; opacity: 0; }
+        input:checked ~ .deck-container .slide .anim-2 { animation: fadeUp 0.8s var(--ease-out) 0.4s forwards; opacity: 0; }
+        input:checked ~ .deck-container .slide .anim-3 { animation: fadeUp 0.8s var(--ease-out) 0.5s forwards; opacity: 0; }
+        input:checked ~ .deck-container .slide .anim-4 { animation: fadeUp 0.8s var(--ease-out) 0.6s forwards; opacity: 0; }
+        input:checked ~ .deck-container .slide .anim-5 { animation: fadeUp 0.8s var(--ease-out) 0.7s forwards; opacity: 0; }
+        
+        /* --- SLIDE 1: NEW ORBITAL DESIGN + GLOW EFFECT --- */
+        
+        .slide-1 {
+            background: radial-gradient(circle at center, #2d4e3e 0%, #1a3c2f 100%);
+            padding: 0; 
+            overflow: hidden;
+        }
+
+        .tilt-grid {
             position: absolute;
-            right: -10%; top: 10%;
-            width: 60vw; height: 60vw;
-            background: radial-gradient(circle, var(--accent-olive) 0%, transparent 70%);
-            opacity: 0.15;
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-            z-index: -1;
-        }
-        .hero-card {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(20px);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            max-width: 800px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        .hero-card:hover { transform: translateY(-5px); }
-
-        /* --- SLIDE 2: PROBLEM (3D FLIP CARDS) --- */
-        .problem-container {
+            inset: 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            height: 60vh;
-            perspective: 1000px;
+            grid-template-rows: 1fr 1fr;
+            z-index: 2;
         }
         
-        /* The Flip Card Container */
-        .flip-card {
-            background-color: transparent;
-            width: 100%; height: 100%;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-        
-        /* Inner Container - holds front and back */
-        .flip-card-inner {
-            position: relative;
-            width: 100%; height: 100%;
-            text-align: center;
-            transition: transform 0.8s var(--bounce);
+        /* Tilt zones kept for background interaction */
+        .tilt-zone { width: 100%; height: 100%; z-index: 5; }
+
+        .tilt-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             transform-style: preserve-3d;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            border-radius: 20px;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            
+            /* CRITICAL FIX: Z-index higher than zones, but let clicks pass through empty space */
+            z-index: 10; 
+            pointer-events: none; 
         }
-        
-        /* Flip on Hover */
-        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
-        
-        /* Front and Back common styling */
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%; height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            padding: 40px;
+
+        /* CSS Mouse Tilt Logic */
+        .tilt-zone:nth-child(1):hover ~ .tilt-content { transform: rotateX(3deg) rotateY(-3deg); }
+        .tilt-zone:nth-child(2):hover ~ .tilt-content { transform: rotateX(3deg) rotateY(3deg); }
+        .tilt-zone:nth-child(3):hover ~ .tilt-content { transform: rotateX(-3deg) rotateY(-3deg); }
+        .tilt-zone:nth-child(4):hover ~ .tilt-content { transform: rotateX(-3deg) rotateY(3deg); }
+
+        /* HERO ORB WITH PULSE & HOVER GLOW */
+        .hero-orb {
+            width: 75vh;
+            height: 75vh;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), rgba(255,255,255,0.01));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.15);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: 20px;
-        }
-        
-        /* Front Style */
-        .flip-card-front {
-            background: white;
-            color: var(--text-dark);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .flip-card-front::after {
-            content: "Hover to reveal impact ↻";
-            position: absolute; bottom: 30px;
-            font-size: 0.8rem; color: #999;
-            animation: float 2s infinite;
-        }
-        
-        /* Back Style */
-        .flip-card-back {
-            background: linear-gradient(135deg, var(--primary-green), #0a2018);
-            color: white;
-            transform: rotateY(180deg);
-        }
-
-        /* --- SLIDE 3: SOLUTION (Accordion Hover) --- */
-        .solution-split {
-            display: flex;
-            gap: 20px;
-            height: 50vh;
-            margin-top: 30px;
-        }
-        .sol-panel {
-            flex: 1;
-            padding: 40px;
-            border-radius: 20px;
-            transition: flex 0.6s var(--ease-out), background 0.3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-        .sol-left {
-            background: white;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .sol-right {
-            background: var(--primary-green);
-            color: white;
-        }
-        /* Hover Effect: Expand one, shrink other */
-        .solution-split:hover .sol-panel { opacity: 0.7; }
-        .solution-split .sol-panel:hover {
-            flex: 2;
-            opacity: 1;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        .sol-icon {
-            font-size: 4rem; margin-bottom: 20px;
-            transition: transform 0.4s var(--bounce);
-        }
-        .sol-panel:hover .sol-icon { transform: scale(1.2) rotate(10deg); }
-
-        /* --- SLIDE 4: HOW IT WORKS (Timeline) --- */
-        .process-steps {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 80px;
-            position: relative;
-        }
-        /* Connecting Line */
-        .process-steps::before {
-            content: '';
-            position: absolute; top: 40px; left: 50px; right: 50px;
-            height: 4px;
-            background: #e0e0e0;
-            z-index: 0;
-        }
-        .step {
-            position: relative;
-            z-index: 1;
-            width: 22%;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
             text-align: center;
-            border: 1px solid transparent;
-            transition: all 0.4s ease;
+            
+            /* Layout & Interaction */
+            transform: translateZ(50px);
+            pointer-events: auto; /* Re-enable pointer events for hover */
             cursor: default;
-        }
-        .step-icon {
-            width: 80px; height: 80px;
-            background: var(--bg-color);
-            border: 4px solid white;
-            border-radius: 50%;
-            margin: -60px auto 20px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: all 0.4s var(--bounce);
-        }
-        /* Hover Interaction */
-        .step:hover {
-            transform: translateY(-15px);
-            border-color: var(--accent-olive);
-            box-shadow: 0 15px 30px rgba(107, 142, 35, 0.2);
-        }
-        .step:hover .step-icon {
-            background: var(--accent-olive);
-            color: white;
-            transform: scale(1.1);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            
+            /* Continuous Pulse Animation */
+            animation: orbPulse 4s infinite ease-in-out;
         }
 
-        /* --- SLIDE 5: MARKET (Floating Bubbles) --- */
-        .market-visual {
-            position: relative;
-            height: 400px;
-            margin-top: 50px;
-            border-bottom: 2px dashed #ccc;
-        }
-        .market-bar {
-            position: absolute;
-            bottom: 0;
-            width: 150px;
-            border-radius: 15px 15px 0 0;
-            display: flex; align-items: flex-end; justify-content: center;
-            padding-bottom: 20px;
-            font-weight: bold;
-            color: white;
-            transition: height 1.5s var(--ease-out), filter 0.3s;
-            box-shadow: 10px 0 20px rgba(0,0,0,0.1);
-        }
-        .bar-2024 { left: 20%; background: linear-gradient(to top, #888, #aaa); height: 0; }
-        .bar-2033 { right: 20%; background: linear-gradient(to top, var(--primary-green), var(--accent-olive)); height: 0; }
-        
-        #s5:checked ~ .deck-container .bar-2024 { height: 25%; }
-        #s5:checked ~ .deck-container .bar-2033 { height: 90%; }
-        
-        .market-bar:hover { filter: brightness(1.2); }
-        .market-bar::after {
-            content: attr(data-val);
-            position: absolute; top: -50px;
-            background: white; color: var(--text-dark);
-            padding: 10px 20px; border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            opacity: 0; transform: translateY(10px);
-            transition: all 0.3s;
-        }
-        .market-bar:hover::after { opacity: 1; transform: translateY(0); }
-
-        /* --- SLIDE 6: USPs (Glass Grid) --- */
-        .usp-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
-        }
-        .usp-item {
-            background: rgba(255,255,255,0.6);
-            backdrop-filter: blur(10px);
-            padding: 30px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.8);
-            transition: all 0.4s var(--ease-out);
-            position: relative; overflow: hidden;
-        }
-        .usp-item::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--accent-olive);
-            transition: width 0.3s ease;
-        }
-        .usp-item:hover {
-            transform: translateY(-5px) scale(1.02);
-            background: white;
-            box-shadow: 0 15px 40px rgba(107, 142, 35, 0.15);
-        }
-        .usp-item:hover::before { width: 100%; opacity: 0.1; }
-
-        /* --- SLIDE 7: COMPETITION (Focus Effect) --- */
-        .comp-table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
-        .comp-row { transition: all 0.3s; opacity: 1; }
-        .comp-cell {
-            padding: 20px; background: white;
-            border-top: 1px solid #eee; border-bottom: 1px solid #eee;
-        }
-        .comp-row:first-child .comp-cell { background: transparent; font-weight: bold; border: none; }
-        .comp-cell:first-child { border-radius: 10px 0 0 10px; border-left: 1px solid #eee; }
-        .comp-cell:last-child { border-radius: 0 10px 10px 0; border-right: 1px solid #eee; }
-        
-        /* Our Row */
-        .our-row .comp-cell {
-            background: var(--primary-green);
-            color: white; border: none;
-            box-shadow: 0 10px 30px rgba(26, 60, 47, 0.3);
-            transform: scale(1.02);
-        }
-        
-        /* Hover Interaction on Table */
-        .comp-table:hover .comp-row:not(:hover) { opacity: 0.4; filter: blur(1px); }
-        .comp-row:hover { transform: scale(1.02); opacity: 1 !important; filter: none !important; }
-
-        /* --- SLIDE 8: REVENUE (Spinning Pie) --- */
-        .pie-container {
-            display: flex; align-items: center; justify-content: center; gap: 60px;
-        }
-        .pie {
-            width: 300px; height: 300px;
-            border-radius: 50%;
-            background: conic-gradient(
-                var(--accent-gold) 0% 25%, 
-                var(--primary-green) 25% 100%
-            );
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            transition: transform 1s var(--bounce);
-        }
-        .pie:hover { transform: rotate(180deg) scale(1.1); }
-        .pie-overlay {
-            position: absolute; inset: 60px;
-            background: var(--bg-color);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; text-align: center;
-            box-shadow: inset 0 5px 15px rgba(0,0,0,0.1);
+        /* Pulse Animation (Default State) */
+        @keyframes orbPulse {
+            0% { 
+                box-shadow: 0 0 40px rgba(197,160,89, 0.15), inset 0 0 20px rgba(197,160,89, 0.05); 
+                border-color: rgba(255,255,255,0.15); 
+            }
+            50% { 
+                box-shadow: 0 0 80px rgba(197,160,89, 0.35), inset 0 0 40px rgba(197,160,89, 0.15); 
+                border-color: rgba(197,160,89, 0.3); 
+            }
+            100% { 
+                box-shadow: 0 0 40px rgba(197,160,89, 0.15), inset 0 0 20px rgba(197,160,89, 0.05); 
+                border-color: rgba(255,255,255,0.15); 
+            }
         }
 
-        /* --- SLIDE 10: TEAM (Pop Cards) --- */
-        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .team-member {
-            background: white; padding: 30px; border-radius: 20px;
-            text-align: center;
-            transition: all 0.4s var(--bounce);
-            border: 1px solid transparent;
+        /* Strong Hover Glow (Active State) */
+        .hero-orb:hover {
+            animation: none; /* Pause pulse to show strong steady glow */
+            box-shadow: 
+                0 0 100px rgba(197,160,89, 0.6),   /* Wide outer glow */
+                0 0 200px rgba(197,160,89, 0.3),   /* Distant outer glow */
+                inset 0 0 50px rgba(197,160,89, 0.2); /* Inner illumination */
+            border-color: #C5A059;
+            transform: translateZ(70px) scale(1.03); /* Slight lift */
         }
-        .team-member:hover {
-            transform: translateY(-20px);
-            border-color: var(--accent-gold);
-            box-shadow: 0 20px 40px rgba(197, 160, 89, 0.2);
-        }
-        .avatar-circle {
-            width: 100px; height: 100px;
-            background: #eee; border-radius: 50%;
-            margin: 0 auto 20px;
-            font-size: 3rem; line-height: 100px;
-            transition: transform 0.4s;
-        }
-        .team-member:hover .avatar-circle { transform: scale(1.2) rotate(-10deg); }
 
-        /* --- SLIDE 11: ASK (Pulsing Gold) --- */
-        .ask-container {
-            display: flex; justify-content: space-around;
-            margin-top: 60px;
-        }
-        .ask-card {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.4s;
-        }
-        .ask-card:hover {
-            background: white;
-            transform: translateY(-10px);
-        }
-        .ask-card:hover h2 { color: var(--primary-green); }
-        .ask-card:hover span { color: #555; }
-        
-        .gold-txt {
-            font-size: 4rem; font-weight: 800;
-            background: linear-gradient(45deg, #FFD700, #DAA520);
+        .hero-orb h1 {
+            font-size: 7rem;
+            background: linear-gradient(to bottom, #ffffff, #dcdcdc);
             -webkit-background-clip: text;
             color: transparent;
-            display: block;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            margin: 1rem 0;
+            letter-spacing: -2px;
         }
-        .ask-btn {
-            margin-top: 50px;
-            padding: 20px 60px;
-            font-size: 1.5rem;
-            background: var(--accent-gold);
-            color: var(--primary-green);
-            border: none; border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            animation: pulse-glow 2s infinite;
-            display: inline-block;
+
+        .hero-orb .tagline {
+            color: #C5A059;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            font-weight: 600;
+            margin: 0;
         }
+
+        .hero-orb p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        /* Orbit Rings */
+        .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(197,160,89,0.3);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .ring-1 { width: 85vh; height: 85vh; animation: spin 40s linear infinite; }
+        .ring-2 { width: 105vh; height: 105vh; animation: spin 50s linear infinite reverse; border-color: rgba(197,160,89,0.15); }
+
+        .particle {
+            position: absolute;
+            top: -5px; left: 50%;
+            width: 10px; height: 10px;
+            background: #C5A059;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #C5A059;
+        }
+
+        .slide-1-footer {
+            position: absolute;
+            bottom: 40px;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            transform: translateZ(30px);
+            width: 100%;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        @keyframes spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* --- CARD STYLES (Slides 2-11) --- */
+        .hover-card {
+            background: linear-gradient(145deg, #ffffff, #f9fbf9);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .hover-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom right, rgba(127, 183, 161, 0.05), transparent);
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+
+        .hover-card:hover {
+            transform: translateY(-8px);
+            background-color: var(--c-sage);
+            box-shadow: 0 20px 40px rgba(14, 59, 46, 0.15);
+            border-color: transparent;
+        }
+
+        .hover-card:hover h3, .hover-card:hover p, .hover-card:hover strong { color: var(--c-deep-green); }
+        .hover-card:hover .icon, .hover-card:hover .icon-lg { color: var(--c-deep-green); stroke: var(--c-deep-green); }
+        .hover-card:hover::before { opacity: 0; }
+
+        /* --- OTHER SLIDE STYLES --- */
+        .problem-grid { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 4rem; align-items: center; height: 70%; }
+        .divider { height: 80%; background: #ddd; }
+        .problem-card { padding: 2rem; border-left: 4px solid var(--c-sage); margin-bottom: 1.5rem; }
+        .highlight-center {
+            grid-column: 1 / -1; text-align: center; margin-top: 2rem; 
+            padding: 1rem 2rem; background: var(--c-deep-green); color: white; border-radius: 50px;
+            display: inline-block; width: fit-content; justify-self: center;
+            animation: pulseSoft 2s infinite;
+        }
+
+        .solution-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 2rem; }
+        .solution-item { display: flex; align-items: flex-start; gap: 1rem; }
+        .check-icon { min-width: 24px; height: 24px; background: var(--c-deep-green); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .quote-box { margin-top: 3rem; border-left: 4px solid var(--c-deep-green); padding-left: 1.5rem; font-style: italic; font-size: 1.4rem; color: var(--c-sage); }
+
+        .process-flow { display: flex; justify-content: space-between; align-items: stretch; margin-top: 3rem; position: relative; }
+        .process-flow::before { content: ''; position: absolute; top: 40px; left: 50px; right: 50px; height: 2px; background: #ddd; z-index: -1; }
+        .step { text-align: center; padding: 2rem 1.5rem; border-radius: 12px; width: 23%; background: white; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; color: var(--c-charcoal); }
+        .step h3 { margin-bottom: 0.5rem; color: var(--c-deep-green); }
+        .step p { font-size: 1rem; margin-top: 0; color: #444; min-height: 3.2rem; display: flex; align-items: center; justify-content: center; }
+        .step-num { width: 40px; height: 40px; background: var(--c-deep-green); color: white; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 1.5rem; font-weight: bold; flex-shrink: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 2; }
+
+        .market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .big-stat { font-size: 6rem; font-weight: 800; color: var(--c-deep-green); line-height: 1; }
+        .stat-label { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--c-sage); margin-bottom: 1rem; }
+        .market-insight { border-top: 1px solid #ddd; padding-top: 1rem; margin-top: 1rem; }
+
+        .usp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+        .usp-card-v2 { position: relative; height: 220px; background: white; border-radius: 16px; padding: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(0,0,0,0.02); overflow: hidden; cursor: default; }
+        .usp-card-v2:hover { transform: translateY(-8px); background-color: var(--c-sage); box-shadow: 0 20px 40px rgba(14, 59, 46, 0.1); border-color: transparent; }
+        .usp-title { font-size: 1.5rem; font-weight: 600; color: var(--c-deep-green); transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), color 0.3s ease; margin-bottom: 0; z-index: 2; }
+        .usp-desc { position: absolute; bottom: 2rem; left: 2rem; right: 2rem; font-size: 1rem; color: #555; opacity: 0; transform: translateY(30px); transition: all 0.4s ease-out; pointer-events: none; z-index: 2; }
+        .usp-bg-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 120px; height: 120px; color: var(--c-deep-green); opacity: 0.03; transition: all 0.5s ease; z-index: 1; }
+        .usp-card-v2:hover .usp-title { transform: translateY(-50px); color: var(--c-deep-green); }
+        .usp-card-v2:hover .usp-desc { opacity: 1; transform: translateY(0); color: var(--c-deep-green); }
+        .usp-card-v2:hover .usp-bg-icon { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); opacity: 0.2; color: var(--c-deep-green); }
+
+        .comp-table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+        .comp-table th { text-align: left; padding: 1rem; border-bottom: 2px solid #ddd; color: var(--c-sage); }
+        .comp-table td { padding: 1.5rem 1rem; border-bottom: 1px solid #eee; font-size: 1.1rem; }
+        .row-us { background: rgba(127, 183, 161, 0.1); font-weight: bold; color: var(--c-deep-green); }
+        .x-icon { color: #cc5555; width: 18px; height: 18px; } 
+        .check-icon-sm { color: var(--c-deep-green); width: 18px; height: 18px; }
+
+        .rev-flow { display: flex; gap: 2rem; margin-top: 2rem; }
+        .rev-card { flex: 1; background: var(--c-deep-green); color: white; padding: 2rem; border-radius: 12px; position: relative; transition: transform 0.3s ease; }
+        .rev-card:hover { transform: translateY(-10px); }
+        .rev-card h3 { color: var(--c-sage); margin-bottom: 1rem; }
+        .rev-card p { color: rgba(255,255,255,0.8); }
+        .arrow-right { font-size: 2rem; align-self: center; color: var(--c-sage); }
+
+        .chart-container { display: flex; align-items: flex-end; justify-content: space-around; height: 300px; margin-top: 3rem; border-bottom: 2px solid #ddd; padding-bottom: 1rem; }
+        .bar-group { display: flex; flex-direction: column; align-items: center; width: 150px; }
+        .bar { width: 60px; background: var(--c-sage); border-radius: 8px 8px 0 0; transition: height 1s ease; position: relative; }
+        .bar.us { background: var(--c-deep-green); }
+        .bar-val { position: absolute; top: -30px; width: 100%; text-align: center; font-weight: bold; }
+        .bar-label { margin-top: 1rem; text-align: center; font-size: 0.9rem; font-weight: bold; }
+        #s9:checked ~ .deck-container .slide-9 .b1 { height: 120px; animation: growBar 1s ease forwards; }
+        #s9:checked ~ .deck-container .slide-9 .b2 { height: 250px; animation: growBar 1.2s ease forwards; }
+        #s9:checked ~ .deck-container .slide-9 .b3 { height: 200px; animation: growBar 1.4s ease forwards; }
+
+        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .team-card { text-align: center; padding: 1.5rem; transition: transform 0.3s ease; }
+        .avatar { width: 120px; height: 120px; background: #ddd; border-radius: 50%; margin: 0 auto 1.5rem; overflow: hidden; position: relative; }
+        .avatar::after { content: ''; position: absolute; bottom: 0; width: 100%; height: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.1)); }
+        .av-1 { background: #E0E0E0; display: grid; place-items: center; font-size: 2rem; color: #999; }
+
+        .ask-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--c-deep-green); border-radius: 12px; overflow: hidden; margin-top: 2rem; }
+        .ask-item { padding: 3rem; border-right: 1px solid #eee; border-bottom: 1px solid #eee; text-align: center; background: white; transition: background 0.3s ease; }
+        .ask-item:hover { background: #f0fdf4; }
+        .ask-val { font-size: 3rem; font-weight: 800; color: var(--c-deep-green); display: block; margin-bottom: 0.5rem; }
+        .ask-lbl { text-transform: uppercase; letter-spacing: 0.1em; color: #666; font-size: 0.8rem; }
+        .final-quote { text-align: center; margin-top: 3rem; font-size: 2rem; font-weight: 300; color: var(--c-charcoal); }
+
     </style>
 </head>
 <body>
 
-    <!-- CONTROL RADIOS -->
+    <!-- STATE INPUTS (Hidden) -->
     <input type="radio" name="slide-control" id="s1" checked>
     <input type="radio" name="slide-control" id="s2">
     <input type="radio" name="slide-control" id="s3">
@@ -586,321 +471,426 @@
     <input type="radio" name="slide-control" id="s10">
     <input type="radio" name="slide-control" id="s11">
 
-    <!-- NAV MENU -->
-    <input type="checkbox" id="nav-checkbox">
-    <label for="nav-checkbox" class="nav-toggle-label"></label>
-    <div class="nav-overlay">
-        <div class="nav-links">
-            <label for="s1" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">01 Intro</label>
-            <label for="s2" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">02 Problem</label>
-            <label for="s3" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">03 Solution</label>
-            <label for="s4" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">04 Process</label>
-            <label for="s5" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">05 Market</label>
-            <label for="s6" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">06 USPs</label>
-            <label for="s7" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">07 Rivals</label>
-            <label for="s8" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">08 Revenue</label>
-            <label for="s9" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">09 Unit Eco</label>
-            <label for="s10" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">10 Team</label>
-            <label for="s11" class="nav-link" onclick="document.getElementById('nav-checkbox').checked = false">11 Ask</label>
-        </div>
-    </div>
-
     <div class="deck-container">
 
-        <!-- SLIDE 1: INTRO -->
+        <!-- SLIDE 1: COVER (UPDATED) -->
         <div class="slide slide-1">
-            <div class="hero-blob"></div>
-            <div class="hero-card animate-in">
-                <span class="tagline">Nova | IIM Bangalore DBE</span>
-                <h1 class="gradient-text">Farm2Future</h1>
-                <h3 style="font-weight: 400; color: #555;">Verified Organic. Transparent Supply. <br>Fair for Farmers.</h3>
-                <p style="margin-top: 20px; opacity: 0.7;">Connecting organic farmers to Tier 1 & Tier 2 India.</p>
+            <div class="tilt-grid">
+                <!-- Zones for CSS Mouse Tilt Tracking -->
+                <div class="tilt-zone"></div>
+                <div class="tilt-zone"></div>
+                <div class="tilt-zone"></div>
+                <div class="tilt-zone"></div>
+
+                <div class="tilt-content">
+                    <div class="hero-orb animate-in">
+                        <div class="orbit-ring ring-1">
+                            <div class="particle"></div>
+                        </div>
+                        <div class="orbit-ring ring-2">
+                            <div class="particle"></div>
+                        </div>
+
+                        <span class="tagline">NOVA | IIM BANGALORE DBE</span>
+                        <h1>Farm2Future</h1>
+                        <p>
+                            VERIFIED ORGANIC. TRANSPARENT SUPPLY.<br>
+                            FAIR FOR FARMERS.
+                        </p>
+                    </div>
+
+                    <div class="slide-1-footer anim-5">
+                        Connecting Organic Farmers to Tier 1 & 2 India<br><br>
+                        <span style="font-size: 0.8rem; opacity: 0.7;">
+                            PITCH TANK | MADHWENDRA SHUKLA • ADITI CHAUBEY • ISHAAN JHA
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="slide-nav">
-                <label for="s2" class="arrow-btn">→</label>
-            </div>
+            
+            <!-- Navigation -->
+            <label for="s2" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 2: PROBLEM (3D FLIP) -->
+        <!-- SLIDE 2: THE PROBLEM -->
         <div class="slide slide-2">
-            <span class="tagline animate-in">The Context</span>
-            <h2 class="animate-in">Trust is Broken on Both Sides</h2>
-            
-            <div class="problem-container animate-in delay-1">
-                
-                <!-- Card 1 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <h3 style="color: var(--warning-red);">The Consumer</h3>
-                            <div style="font-size: 4rem; margin: 20px 0;">🛒❓</div>
-                            <p>"Is this actually organic?"</p>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3>The Impact</h3>
-                            <p style="font-size: 1.2rem;">Hesitation to pay premiums.<br><br>Stagnant Market.</p>
-                        </div>
+            <h2 class="anim-1">The Trust Gap in Organic Food</h2>
+            <div class="problem-grid">
+                <div class="anim-2">
+                    <h3>Consumer Pain</h3>
+                    <div class="problem-card hover-card">
+                        <!-- Icon: Alert Triangle -->
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <p><strong>No Guarantee</strong><br>Is this actually organic? Labels are often fake.</p>
+                    </div>
+                    <div class="problem-card hover-card">
+                        <!-- Icon: Eye Off -->
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                        <p><strong>No Visibility</strong><br>Zero insight into farm practices or harvest dates.</p>
+                    </div>
+                    <div class="problem-card hover-card">
+                        <!-- Icon: Trending Down -->
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                        <p><strong>Inconsistent Quality</strong><br>Supermarket organic is often wilted or old.</p>
                     </div>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <h3 style="color: var(--warning-red);">The Farmer</h3>
-                            <div style="font-size: 4rem; margin: 20px 0;">🌾📉</div>
-                            <p>"Where are my profits?"</p>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3>The Impact</h3>
-                            <p style="font-size: 1.2rem;">Low margins (~2%).<br><br>Dependency on middlemen.</p>
-                        </div>
+                <div class="divider anim-3"></div>
+                <div class="anim-3">
+                    <h3>Farmer Pain</h3>
+                    <div class="problem-card hover-card" style="border-color: var(--c-deep-green);">
+                         <!-- Icon: Dollar/Money -->
+                         <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                        <p><strong>Intermediary Trap</strong><br>Middlemen take 60% of the margin.</p>
+                    </div>
+                    <div class="problem-card hover-card" style="border-color: var(--c-deep-green);">
+                        <!-- Icon: Activity -->
+                        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        <p><strong>Price Volatility</strong><br>No demand certainty leads to crop waste.</p>
                     </div>
                 </div>
-
+                <div class="highlight-center anim-4">
+                    Trust is broken on both sides.
+                </div>
             </div>
-            <div class="slide-nav"><label for="s1" class="arrow-btn">←</label><label for="s3" class="arrow-btn">→</label></div>
+            
+            <label for="s1" class="nav-label nav-prev">←</label>
+            <label for="s3" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 3: SOLUTION (SPLIT HOVER) -->
+        <!-- SLIDE 3: OUR SOLUTION -->
         <div class="slide slide-3">
-            <span class="tagline animate-in">The Solution</span>
-            <h2 class="animate-in">Trust-First Architecture</h2>
-            
-            <div class="solution-split animate-in delay-1">
-                <div class="sol-panel sol-left">
-                    <div class="sol-icon">🔗</div>
-                    <h3>Direct Connection</h3>
-                    <p>Cutting out opaque middlemen. Farmers connect directly to our verified supply chain.</p>
+            <div class="bg-circle" style="width: 400px; height: 400px; bottom: -50px; left: -50px;"></div>
+            <h2 class="anim-1">A Trust-First Sourcing Platform</h2>
+            <div class="solution-list">
+                <div class="solution-item anim-2">
+                    <div class="check-icon">
+                        <svg class="icon" viewBox="0 0 24 24" style="margin:0; width:16px; height:16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div>
+                        <h3>Direct Farmer → Consumer</h3>
+                        <p>Eliminating 3 layers of middlemen.</p>
+                    </div>
                 </div>
-                <div class="sol-panel sol-right">
-                    <div class="sol-icon">🛡️</div>
-                    <h3>Transparency-Led</h3>
-                    <p>We don't sell "discounts". We sell "verified origin". Every crop is traceable.</p>
+                <div class="solution-item anim-3">
+                    <div class="check-icon">
+                        <svg class="icon" viewBox="0 0 24 24" style="margin:0; width:16px; height:16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div>
+                        <h3>Tier 1 & Tier 2 Focus</h3>
+                        <p>Serving the underserved premium market.</p>
+                    </div>
+                </div>
+                <div class="solution-item anim-4">
+                    <div class="check-icon">
+                        <svg class="icon" viewBox="0 0 24 24" style="margin:0; width:16px; height:16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div>
+                        <h3>Transparency-Led</h3>
+                        <p>QR codes trace every harvest back to the soil.</p>
+                    </div>
+                </div>
+                <div class="solution-item anim-5">
+                    <div class="check-icon">
+                        <svg class="icon" viewBox="0 0 24 24" style="margin:0; width:16px; height:16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div>
+                        <h3>Website-First</h3>
+                        <p>Low friction ordering, building for scale.</p>
+                    </div>
                 </div>
             </div>
-            <div class="slide-nav"><label for="s2" class="arrow-btn">←</label><label for="s4" class="arrow-btn">→</label></div>
+            <div class="quote-box anim-5">
+                "Not just organic delivery — verified organic supply."
+            </div>
+
+            <label for="s2" class="nav-label nav-prev">←</label>
+            <label for="s4" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 4: PROCESS (TIMELINE) -->
+        <!-- SLIDE 4: HOW IT WORKS -->
         <div class="slide slide-4">
-            <span class="tagline animate-in">Workflow</span>
-            <h2 class="animate-in">From Soil to Doorstep</h2>
-            
-            <div class="process-steps animate-in delay-1">
-                <div class="step">
-                    <div class="step-icon">📝</div>
-                    <h4>1. Verify</h4>
-                    <p style="font-size: 0.9rem;">Physical soil testing & farmer onboarding.</p>
+            <h2 class="anim-1">How It Works</h2>
+            <div class="process-flow">
+                <div class="step hover-card anim-2">
+                    <div class="step-num">1</div>
+                    <h3>Farmer Onboarding</h3>
+                    <p>Soil testing & organic certification verification.</p>
                 </div>
-                <div class="step">
-                    <div class="step-icon">🌱</div>
-                    <h4>2. Plan</h4>
-                    <p style="font-size: 0.9rem;">Pre-agreed pricing before seeds are sown.</p>
+                <div class="step hover-card anim-3">
+                    <div class="step-num">2</div>
+                    <h3>Crop Planning</h3>
+                    <p>Demand-led planting schedules & fair pricing.</p>
                 </div>
-                <div class="step">
-                    <div class="step-icon">🚚</div>
-                    <h4>3. Order</h4>
-                    <p style="font-size: 0.9rem;">Seamless website ordering & logistics.</p>
+                <div class="step hover-card anim-4">
+                    <div class="step-num">3</div>
+                    <h3>Consumer Orders</h3>
+                    <p>Weekly baskets with full traceability.</p>
                 </div>
-                <div class="step">
-                    <div class="step-icon">⭐</div>
-                    <h4>4. Feedback</h4>
-                    <p style="font-size: 0.9rem;">Quality loops back to the farmer.</p>
+                <div class="step hover-card anim-5">
+                    <div class="step-num">4</div>
+                    <h3>Feedback Loop</h3>
+                    <p>QR scan for quality check & farmer rating.</p>
                 </div>
             </div>
-            <div class="slide-nav"><label for="s3" class="arrow-btn">←</label><label for="s5" class="arrow-btn">→</label></div>
+
+            <label for="s3" class="nav-label nav-prev">←</label>
+            <label for="s5" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 5: MARKET (GROWING BARS) -->
+        <!-- SLIDE 5: MARKET OPPORTUNITY -->
         <div class="slide slide-5">
-            <span class="tagline animate-in">Opportunity</span>
-            <h2 class="animate-in">A $10B Horizon</h2>
-            
-            <div class="market-visual animate-in delay-1">
-                <div class="market-bar bar-2024" data-val="$1.9 Billion">2024</div>
-                <div class="market-bar bar-2033" data-val="$10.8 Billion">2033</div>
-            </div>
-            
-            <div style="display: flex; gap: 40px; margin-top: 30px;" class="animate-in delay-2">
+            <h2 class="anim-1">Market Opportunity</h2>
+            <div class="market-grid">
                 <div>
-                    <h3 style="color: var(--accent-olive);">20% CAGR</h3>
-                    <p>Driven by Tier 1 & 2 health consciousness.</p>
+                    <div class="anim-2">
+                        <div class="big-stat">$1.9B</div>
+                        <div class="stat-label">Indian Organic Market (2024)</div>
+                    </div>
+                    <div class="anim-3" style="margin-top: 3rem;">
+                        <div class="big-stat">$10.8B</div>
+                        <div class="stat-label">Projected by 2033</div>
+                    </div>
                 </div>
                 <div>
-                    <h3 style="color: var(--accent-olive);">Trust > Speed</h3>
-                    <p>The consumer is shifting from "Fast Food" to "Good Food".</p>
+                    <div class="market-insight anim-4">
+                        <h3>~20% CAGR</h3>
+                        <p>One of the fastest growing food sectors in India.</p>
+                    </div>
+                    <div class="market-insight anim-5">
+                        <h3>Tier 2 Demand</h3>
+                        <p>Rising health consciousness in non-metro cities with limited supply.</p>
+                    </div>
+                    <div class="market-insight anim-5">
+                        <h3>Subscription Behavior</h3>
+                        <p>High sticky factor once trust is established.</p>
+                    </div>
                 </div>
             </div>
-            <div class="slide-nav"><label for="s4" class="arrow-btn">←</label><label for="s6" class="arrow-btn">→</label></div>
+            <div class="anim-5" style="margin-top: 2rem; font-weight: bold; color: var(--c-deep-green);">
+                Insight: Consumers pay for TRUST, not just the product.
+            </div>
+
+            <label for="s4" class="nav-label nav-prev">←</label>
+            <label for="s6" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 6: USPS (GLASS GRID) -->
+        <!-- SLIDE 6: USP - SAGE HOVER LOGIC -->
         <div class="slide slide-6">
-            <span class="tagline animate-in">Why Us</span>
-            <h2 class="animate-in">The Defense Moat</h2>
-            
-            <div class="usp-grid animate-in delay-1">
-                <div class="usp-item">
-                    <h3>⛓️ Blockchain Traceability</h3>
-                    <p>Tamper-proof farm-to-fork records.</p>
+            <h2 class="anim-1">Core Advantages</h2>
+            <p style="margin-bottom: 2rem; font-size: 0.9rem; color: #666;" class="anim-1">Hover over cards to see details</p>
+            <div class="usp-grid anim-2">
+                
+                <!-- USP 1 -->
+                <div class="usp-card-v2">
+                    <svg class="usp-bg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <h3 class="usp-title">Blockchain Traceability</h3>
+                    <p class="usp-desc">
+                        Every batch has a digital footprint. Consumers scan to see the farm, harvest date, and soil test report. Solves the trust deficit.
+                    </p>
                 </div>
-                <div class="usp-item">
-                    <h3>🧠 AI Smart Baskets</h3>
-                    <p>Personalized subscriptions increasing LTV.</p>
+
+                <!-- USP 2 -->
+                <div class="usp-card-v2">
+                     <svg class="usp-bg-icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path><path d="M12 6v6l4 2"></path></svg>
+                    <h3 class="usp-title">AI-Powered Baskets</h3>
+                    <p class="usp-desc">
+                        Smart prediction algorithms suggest basket mixes based on seasonal availability and user preferences, reducing waste.
+                    </p>
                 </div>
-                <div class="usp-item">
-                    <h3>🚜 On-Demand Production</h3>
-                    <p>Demand-driven farming reduces wastage.</p>
+
+                <!-- USP 3 -->
+                <div class="usp-card-v2">
+                    <svg class="usp-bg-icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    <h3 class="usp-title">On-Demand Production</h3>
+                    <p class="usp-desc">
+                        We tell farmers what to grow based on pre-paid subscriptions. This eliminates market risk for the farmer.
+                    </p>
                 </div>
-                <div class="usp-item">
-                    <h3>📡 IoT Verification</h3>
-                    <p>Tech-assisted quality checks.</p>
+
+                <!-- USP 4 -->
+                <div class="usp-card-v2">
+                    <svg class="usp-bg-icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <h3 class="usp-title">IoT Quality Check</h3>
+                    <p class="usp-desc">
+                        Sensors in logistics ensure temperature control from farm gate to doorstep, maintaining nutrient density.
+                    </p>
                 </div>
+
             </div>
-            <div class="slide-nav"><label for="s5" class="arrow-btn">←</label><label for="s7" class="arrow-btn">→</label></div>
+
+            <label for="s5" class="nav-label nav-prev">←</label>
+            <label for="s7" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 7: COMPETITION (FOCUS TABLE) -->
+        <!-- SLIDE 7: COMPETITION -->
         <div class="slide slide-7">
-            <span class="tagline animate-in">Landscape</span>
-            <h2 class="animate-in">Verified Sourcing vs Logistics</h2>
-            
-            <table class="comp-table animate-in delay-1">
-                <tr class="comp-row">
-                    <td class="comp-cell">Platform</td>
-                    <td class="comp-cell">Focus</td>
-                    <td class="comp-cell">Critical Gap</td>
-                </tr>
-                <tr class="comp-row">
-                    <td class="comp-cell">Amazon Fresh</td>
-                    <td class="comp-cell">Tier 1 Logistics</td>
-                    <td class="comp-cell">No freshness guarantee</td>
-                </tr>
-                <tr class="comp-row">
-                    <td class="comp-cell">BigBasket</td>
-                    <td class="comp-cell">Centralized Sourcing</td>
-                    <td class="comp-cell">Opaque sourcing</td>
-                </tr>
-                <tr class="comp-row">
-                    <td class="comp-cell">Blinkit / Zepto</td>
-                    <td class="comp-cell">Extreme Speed</td>
-                    <td class="comp-cell">Quality compromise</td>
-                </tr>
-                <tr class="comp-row our-row">
-                    <td class="comp-cell">Farm2Future</td>
-                    <td class="comp-cell">Trust & Sourcing</td>
-                    <td class="comp-cell">None (Verified Organic)</td>
-                </tr>
+            <h2 class="anim-1">Competitive Landscape</h2>
+            <table class="comp-table anim-2">
+                <thead>
+                    <tr>
+                        <th>Platform</th>
+                        <th>Sourcing</th>
+                        <th>Focus</th>
+                        <th>Traceability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="anim-3">
+                        <td>Amazon Fresh</td>
+                        <td>Aggregators</td>
+                        <td>Selection & Speed</td>
+                        <td>
+                            <svg class="icon x-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Low
+                        </td>
+                    </tr>
+                    <tr class="anim-4">
+                        <td>BigBasket / Blinkit</td>
+                        <td>Dark Stores</td>
+                        <td>Speed (10min)</td>
+                        <td>
+                            <svg class="icon x-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Medium
+                        </td>
+                    </tr>
+                    <tr class="row-us anim-5" style="transform: scale(1.02); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <td>Farm2Future</td>
+                        <td>Direct Farm</td>
+                        <td>Trust & Purity</td>
+                        <td>
+                            <svg class="icon check-icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Full (Blockchain)
+                        </td>
+                    </tr>
+                </tbody>
             </table>
-            <div class="slide-nav"><label for="s6" class="arrow-btn">←</label><label for="s8" class="arrow-btn">→</label></div>
+            <div class="anim-5" style="margin-top: 2rem;">
+                <p><strong>Our Moat:</strong> Verified sourcing cannot be built overnight by speed-focused players.</p>
+            </div>
+
+            <label for="s6" class="nav-label nav-prev">←</label>
+            <label for="s8" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 8: REVENUE (SPINNING PIE) -->
+        <!-- SLIDE 8: REVENUE MODEL -->
         <div class="slide slide-8">
-            <span class="tagline animate-in">Business Model</span>
-            <h2 class="animate-in">Sustainable Revenue</h2>
-            
-            <div class="pie-container animate-in delay-1">
-                <div class="pie">
-                    <div class="pie-overlay">
-                        3<br>Streams
-                    </div>
+            <h2 class="anim-1">Revenue Model</h2>
+            <div class="rev-flow">
+                <div class="rev-card anim-2">
+                    <h3>Farmer Commission</h3>
+                    <p>2–4%</p>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">On produce sales facilitated through the platform.</p>
                 </div>
-                <div style="flex: 1;">
-                    <div class="usp-item" style="margin-bottom: 10px;">
-                        <strong>1. Farmer Commission (2-4%)</strong>
-                        <p style="font-size: 0.8rem;">Low take-rate ensures fairness.</p>
-                    </div>
-                    <div class="usp-item" style="margin-bottom: 10px;">
-                        <strong>2. Platform Fee</strong>
-                        <p style="font-size: 0.8rem;">Quality assurance fee.</p>
-                    </div>
-                    <div class="usp-item">
-                        <strong>3. Subscriptions</strong>
-                        <p style="font-size: 0.8rem;">Recurring smart baskets.</p>
-                    </div>
+                <div class="arrow-right anim-3">→</div>
+                <div class="rev-card anim-3">
+                    <h3>Platform Fee</h3>
+                    <p>Delivery & Service</p>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">Charged to consumer for last-mile logistics.</p>
+                </div>
+                <div class="arrow-right anim-4">→</div>
+                <div class="rev-card anim-4">
+                    <h3>Subscription Baskets</h3>
+                    <p>Recurring Revenue</p>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">Monthly pre-paid organic plans (High Retention).</p>
                 </div>
             </div>
-            <div class="slide-nav"><label for="s7" class="arrow-btn">←</label><label for="s9" class="arrow-btn">→</label></div>
+            <p class="anim-5" style="margin-top: 3rem; text-align: center;">
+                <em>Future Stream: B2B supply to organic cafes and hotels.</em>
+            </p>
+
+            <label for="s7" class="nav-label nav-prev">←</label>
+            <label for="s9" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 9: UNIT ECO (CARDS) -->
+        <!-- SLIDE 9: CAC & UNIT ECONOMICS -->
         <div class="slide slide-9">
-            <span class="tagline animate-in">Economics</span>
-            <h2 class="animate-in">CAC & Recovery</h2>
-            
-            <div style="display: flex; gap: 30px; margin-top: 30px;" class="animate-in delay-1">
-                <div class="usp-item" style="flex: 1; text-align: center;">
-                    <h3>Consumer CAC</h3>
-                    <span style="font-size: 3rem; font-weight: bold; color: var(--primary-green);">₹250</span>
-                    <p>Industry: ₹450+</p>
-                    <div style="margin-top: 20px; background: #ddd; height: 10px; border-radius: 5px; overflow: hidden;">
-                        <div style="width: 50%; background: var(--primary-green); height: 100%;"></div>
-                    </div>
+            <h2 class="anim-1">Unit Economics & CAC</h2>
+            <div class="chart-container">
+                <div class="bar-group">
+                    <div class="bar b1"><div class="bar-val">₹250</div></div>
+                    <div class="bar-label">Our CAC</div>
                 </div>
-                <div class="usp-item" style="flex: 1; text-align: center;">
-                    <h3>Farmer CAC</h3>
-                    <span style="font-size: 3rem; font-weight: bold; color: var(--accent-olive);">₹750</span>
-                    <p>One-time acquisition</p>
-                    <div style="margin-top: 20px; background: #ddd; height: 10px; border-radius: 5px; overflow: hidden;">
-                        <div style="width: 80%; background: var(--accent-olive); height: 100%;"></div>
-                    </div>
+                <div class="bar-group">
+                    <div class="bar b2" style="background: #ccc;"><div class="bar-val">₹500</div></div>
+                    <div class="bar-label">Industry Avg</div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar b3 us"><div class="bar-val">₹1000</div></div>
+                    <div class="bar-label">Farmer CAC</div>
                 </div>
             </div>
-            <div class="slide-nav"><label for="s8" class="arrow-btn">←</label><label for="s10" class="arrow-btn">→</label></div>
+            <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                <div class="anim-4" style="width: 45%;">
+                    <h3>Consumer CAC: ₹200–300</h3>
+                    <p>Low due to word-of-mouth in community groups and high trust factor.</p>
+                </div>
+                <div class="anim-5" style="width: 45%;">
+                    <h3>Payback Period</h3>
+                    <p><strong>2–3 Purchases.</strong> High LTV as organic buyers are habit-driven.</p>
+                </div>
+            </div>
+
+            <label for="s8" class="nav-label nav-prev">←</label>
+            <label for="s10" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 10: TEAM (AVATARS) -->
+        <!-- SLIDE 10: TEAM -->
         <div class="slide slide-10">
-            <span class="tagline animate-in">Execution</span>
-            <h2 class="animate-in">The Builders</h2>
-            
-            <div class="team-grid animate-in delay-1">
-                <div class="team-member">
-                    <div class="avatar-circle">👨‍🌾</div>
-                    <h3>Madhwendra S.</h3>
-                    <small style="color: var(--accent-olive);">FOUNDER</small>
+            <h2 class="anim-1">The Team</h2>
+            <div class="team-grid">
+                <div class="team-card hover-card anim-2">
+                    <div class="avatar av-1">MS</div>
+                    <h3>Madhwendra Shukla</h3>
+                    <p style="color: var(--c-sage); font-weight: bold;">Strategy & Product</p>
                 </div>
-                <div class="team-member">
-                    <div class="avatar-circle">👩‍💼</div>
-                    <h3>Aditi C.</h3>
-                    <small style="color: var(--accent-olive);">OPERATIONS</small>
+                <div class="team-card hover-card anim-3">
+                    <div class="avatar av-1">AC</div>
+                    <h3>Aditi Chaubey</h3>
+                    <p style="color: var(--c-sage); font-weight: bold;">Operations</p>
                 </div>
-                <div class="team-member">
-                    <div class="avatar-circle">👨‍💻</div>
-                    <h3>Ishaan J.</h3>
-                    <small style="color: var(--accent-olive);">TECH LEAD</small>
+                <div class="team-card hover-card anim-4">
+                    <div class="avatar av-1">IJ</div>
+                    <h3>Ishaan Jha</h3>
+                    <p style="color: var(--c-sage); font-weight: bold;">Tech & Blockchain</p>
                 </div>
             </div>
-            <div class="slide-nav"><label for="s9" class="arrow-btn">←</label><label for="s11" class="arrow-btn">→</label></div>
+            <p class="anim-5" style="text-align: center; margin-top: 3rem; font-size: 1.2rem;">
+                Complementary skills across agriculture, supply chain, and technology.
+            </p>
+
+            <label for="s9" class="nav-label nav-prev">←</label>
+            <label for="s11" class="nav-label nav-next">→</label>
         </div>
 
-        <!-- SLIDE 11: ASK (GOLD) -->
-        <div class="slide slide-11" style="background: var(--primary-green); color: white;">
-            <span class="tagline animate-in" style="color: white;">Investment</span>
-            <h2 class="animate-in" style="color: white;">The Ask</h2>
-            
-            <div class="ask-container animate-in delay-1">
-                <div class="ask-card">
-                    <span class="gold-txt">₹50L</span>
-                    <span>Raising</span>
+        <!-- SLIDE 11: THE ASK -->
+        <div class="slide slide-11">
+            <h2 class="anim-1">The Ask</h2>
+            <div class="ask-grid anim-2">
+                <div class="ask-item">
+                    <span class="ask-val">₹50 Lakhs</span>
+                    <span class="ask-lbl">Investment</span>
                 </div>
-                <div class="ask-card">
-                    <span class="gold-txt">10%</span>
-                    <span>Equity</span>
+                <div class="ask-item">
+                    <span class="ask-val">10%</span>
+                    <span class="ask-lbl">Equity</span>
                 </div>
-                <div class="ask-card">
-                    <span class="gold-txt">₹5Cr</span>
-                    <span>Valuation</span>
+                <div class="ask-item" style="border-bottom: none;">
+                    <span class="ask-val">₹5 Cr</span>
+                    <span class="ask-lbl">Valuation (Pre-money)</span>
+                </div>
+                <div class="ask-item" style="border-bottom: none; border-right: none;">
+                    <span class="ask-val">Use of Funds</span>
+                    <span class="ask-lbl">Website Launch • Farmer Onboarding • Pilot</span>
                 </div>
             </div>
-
-            <div style="text-align: center; margin-top: 20px;">
-                <div class="ask-btn">Let's Grow Together</div>
+            <div class="final-quote anim-3">
+                We’re building <span style="color: var(--c-deep-green); font-weight: bold;">trust</span> before scale.
+            </div>
+            <div style="text-align: center; margin-top: 2rem; opacity: 0.5;" class="anim-4">
+                contact@farm2future.in
             </div>
 
-            <div class="slide-nav"><label for="s10" class="arrow-btn" style="background: white;">←</label></div>
+            <label for="s10" class="nav-label nav-prev">←</label>
         </div>
 
     </div>
